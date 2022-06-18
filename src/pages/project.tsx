@@ -27,10 +27,10 @@ export default function Project() {
           align={size.width > 1200 ? "center" : "normal"}
         >
           <Flex flexDir="column">
-            <Text fontSize="6xl" fontWeight="bold" color="#333">
+            <Text fontSize="5xl" fontWeight="bold" color="#333">
               Project
             </Text>
-            <Text fontSize="6xl" fontWeight="bold" color="#333">
+            <Text fontSize="5xl" fontWeight="bold" color="#333">
               Management
             </Text>
           </Flex>
