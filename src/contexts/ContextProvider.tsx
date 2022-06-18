@@ -84,7 +84,11 @@ export function signOut() {
 }
 
 export function ContextProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>({
+    _id: "0",
+    name: "Peter Panda",
+    email: "peter@panda.com"
+  });
 
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -98,9 +102,9 @@ export function ContextProvider({ children }: AuthProviderProps) {
     const { "nextauth.token": token } = parseCookies();
 
     if (!token) {
-      if (router.pathname === "/signin") {
+      if (router.pathname === "/account/signin") {
         //
-      } else if (router.pathname === "/signup") {
+      } else if (router.pathname === "/account/signup") {
         //
       } else if (router.pathname === "/forgot") {
         //
