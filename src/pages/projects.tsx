@@ -1,11 +1,24 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Icon, Spinner, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
+import { RiAddFill } from "react-icons/ri";
 import Header from "../Components/Header";
+import Loading from "../Components/Loading";
+import { Context } from "../contexts/ContextProvider";
 import { useWindowSize } from "../utils/useWindowSize";
 
 export default function Project() {
   const size = useWindowSize();
+
+  const { user, loading } = useContext(Context);
+
+  if (loading) {
+    return (
+      <Flex h="100vh" w="100%" justify="center" align="center">
+        <Spinner size="lg" color="#333" />
+      </Flex>
+    );
+  }
 
   return (
     <Flex flexDir="column" w="100%" bg="#FCFCFF" px="4">
@@ -13,26 +26,34 @@ export default function Project() {
       <Flex
         maxW={1200}
         mx="auto"
-        py="10"
         flexDir="column"
         bg="#FCFCFF"
         w="100%"
         borderRadius="10"
       >
         <Flex
-          p="2"
-          flexDir={size.width > 1200 ? "row" : "column"}
+          cursor="pointer"
+          flexDir="row"
           w="100%"
           justify="space-between"
-          align={size.width > 1200 ? "center" : "normal"}
+          align="center"
         >
           <Flex flexDir="column">
             <Text fontSize="5xl" fontWeight="bold" color="#333">
-              Project
+              Projects
             </Text>
-            <Text fontSize="5xl" fontWeight="bold" color="#333">
-              Management
-            </Text>
+          </Flex>
+          <Flex
+            style={{
+              height: 50,
+              width: 50,
+            }}
+            bg="#eee"
+            borderRadius="5"
+            justify="center"
+            align="center"
+          >
+            <Icon as={RiAddFill} fontSize="xl" color="#333" />
           </Flex>
         </Flex>
         <Flex
@@ -109,26 +130,6 @@ export default function Project() {
                 Adicionar
               </Text>
             </Flex>
-          </Flex>
-        </Flex>
-        <Flex
-          my="20"
-          flexDir="column"
-          maxW={size.width < 1200 && 600}
-          style={{
-            width: size.width > 700 ? "49%" : "100%",
-            height: 300,
-          }}
-          borderRadius="5"
-          justify="space-between"
-        >
-          <Flex flexDir="column">
-            <Text fontSize="5xl" fontWeight="bold" color="#333">
-              ...
-            </Text>
-            <Text mt="5" fontSize="lg" color="#333">
-              ...
-            </Text>
           </Flex>
         </Flex>
       </Flex>

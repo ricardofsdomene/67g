@@ -29,7 +29,7 @@ export default function Signin() {
   return (
     <Flex flexDir="column" px="4">
       <Header none />
-      <Flex mt="10" mx="auto" maxW={1200} flexDir="column" w="100%" h="100%">
+      <Flex mx="auto" maxW={1200} flexDir="column" w="100%" h="100%">
         <Text fontWeight="bold" color="#333" fontSize="6xl">
           Signin
         </Text>

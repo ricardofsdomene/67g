@@ -8,19 +8,17 @@ export default function Index() {
   const size = useWindowSize();
 
   return (
-    <Flex flexDir="column" w="100%" bg="#FCFCFF" px="4">
+    <Flex flexDir="column" w="100%" bg="#FCFCFF" px="4" pb="4">
       <Header />
       <Flex
         maxW={1200}
         mx="auto"
-        py="10"
         flexDir="column"
         bg="#FCFCFF"
         w="100%"
         borderRadius="10"
       >
         <Flex
-          p="2"
           flexDir={size.width > 1200 ? "row" : "column"}
           w="100%"
           justify="space-between"

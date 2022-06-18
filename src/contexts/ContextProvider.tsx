@@ -21,7 +21,7 @@ type User = {
   name: string;
   email: string;
   permissions?: string[];
-  roles?: string[];
+  role: string;
 };
 
 type SignInCredentials = {
@@ -105,8 +105,8 @@ export function ContextProvider({ children }: AuthProviderProps) {
       } else if (router.pathname === "/forgot") {
         //
       } else {
+        router.push("/");
         setTimeout(() => {
-          router.push("/");
           setLoading(false);
         }, 500);
       }
@@ -116,8 +116,9 @@ export function ContextProvider({ children }: AuthProviderProps) {
 
       const decoded: User = jwtDecode(token);
 
+      // esse que tava dando pau no serverless
       // key manager res.data verificar tudo aqui
-      api.get(`/auth/user/${decoded._id}`).then((res) => {
+      api.get(`/account/user/${decoded._id}`).then((res) => {
         if (!res.data) {
           destroyCookie(undefined, "nextauth.token");
           destroyCookie(undefined, "nextauth.refreshToken");
@@ -133,9 +134,7 @@ export function ContextProvider({ children }: AuthProviderProps) {
       });
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      setLoading(false);
     }
   }, []);
 
@@ -155,12 +154,13 @@ export function ContextProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-      const response = await api.post("/api/session", {
+      setLoading(true);
+      const response = await api.post("/account/session", {
         email: email,
         password: password,
       });
 
-      const { _id, name, token, refreshToken, roles } = response.data;
+      const { _id, name, token, refreshToken, role } = response.data;
 
       if (response.data.error) {
         return response.data;
@@ -178,14 +178,14 @@ export function ContextProvider({ children }: AuthProviderProps) {
           _id,
           name,
           email,
-          roles,
+          role,
         });
 
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-        Router.push("/admin");
-
         setLoading(false);
+
+        router.push("/overview");
 
         return {
           status: "Sucesso!",
@@ -203,19 +203,19 @@ export function ContextProvider({ children }: AuthProviderProps) {
     password,
   }: SignUpCredentials): Promise<SignUpResponse> {
     try {
-      const response = await api.post("/api/signup", {
+      const response = await api.post("/account/signup", {
         name,
         email,
         password,
       });
 
       if (response.data.status === "Usuário criado com sucesso!") {
-        const response = await api.post("/api/session", {
+        const response = await api.post("/account/session", {
           email: email,
           password: password,
         });
 
-        const { _id, name, token, refreshToken, roles } = response.data;
+        const { _id, name, token, refreshToken, role } = response.data;
 
         if (response.data.error) {
           return response.data.message;
@@ -233,12 +233,12 @@ export function ContextProvider({ children }: AuthProviderProps) {
             _id,
             name,
             email,
-            roles,
+            role,
           });
 
           api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-          Router.push("/admin");
+          Router.push("/overview");
 
           setLoading(false);
 
@@ -262,7 +262,7 @@ export function ContextProvider({ children }: AuthProviderProps) {
   async function updateName({ id, param, value }: TUpdate) {
     try {
       const response: AxiosResponse = await api.put(
-        `/auth/update/${id}/${param}/${value}`
+        `/account/update/${id}/${param}/${value}`
       );
 
       if (response.data.Message === "Atualizado com sucesso") {
