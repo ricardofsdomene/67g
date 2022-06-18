@@ -132,7 +132,8 @@ export default function Header({ none = false }) {
               textDecorationLine={
                 user && user.role === "67g"
                   ? router.asPath === "/overview" && "underline"
-                  : router.asPath === "/" && "underline"
+                  : (router.asPath === "/overview" || router.asPath === "/") &&
+                    "underline"
               }
               cursor="pointer"
               fontSize="xl"
