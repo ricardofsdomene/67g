@@ -1,10 +1,32 @@
-import { Flex, Input, Text } from "@chakra-ui/react";
-import React from "react";
+import { Flex, Input, Text, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
 import Header from "../../Components/Header";
+import { Context } from "../../contexts/ContextProvider";
+import { api } from "../../services/apiClient";
 import { useWindowSize } from "../../utils/useWindowSize";
 
 export default function Signin() {
   const size = useWindowSize();
+
+  const { signUp } = useContext(Context);
+
+  const toast = useToast();
+
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleSignUp = async () => {
+    try {
+      await signUp({ name, email, password });
+    } catch (e) {
+      toast({
+        status: "error",
+        description: "Error",
+      });
+    }
+  };
 
   return (
     <Flex flexDir="column" px="4">
@@ -17,6 +39,11 @@ export default function Signin() {
           Nome
         </Text>
         <Input
+          type="text"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setName(e.target.value);
+          }}
+          value={name}
           mt="2"
           h="12"
           color="#333"
@@ -29,6 +56,11 @@ export default function Signin() {
           Email
         </Text>
         <Input
+          type="email"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setEmail(e.target.value);
+          }}
+          value={email}
           mt="2"
           h="12"
           color="#333"
@@ -41,6 +73,11 @@ export default function Signin() {
           Senha
         </Text>
         <Input
+          type="password"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setPassword(e.target.value);
+          }}
+          value={password}
           mt="2"
           h="12"
           color="#333"
@@ -49,6 +86,7 @@ export default function Signin() {
           border="1px solid #eee"
         />
         <Flex
+          onClick={handleSignUp}
           cursor="pointer"
           mt="10"
           h="14"

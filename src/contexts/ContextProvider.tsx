@@ -84,11 +84,7 @@ export function signOut() {
 }
 
 export function ContextProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>({
-    _id: "0",
-    name: "Peter Panda",
-    email: "peter@panda.com"
-  });
+  const [user, setUser] = useState<User | null>();
 
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -159,13 +155,12 @@ export function ContextProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
-      const response = await api.post("/auth/sessions", {
+      const response = await api.post("/api/session", {
         email: email,
         password: password,
       });
 
-      const { _id, name, token, refreshToken, permissions, roles } =
-        response.data;
+      const { _id, name, token, refreshToken, roles } = response.data;
 
       if (response.data.error) {
         return response.data;
@@ -183,7 +178,6 @@ export function ContextProvider({ children }: AuthProviderProps) {
           _id,
           name,
           email,
-          permissions,
           roles,
         });
 
@@ -209,20 +203,19 @@ export function ContextProvider({ children }: AuthProviderProps) {
     password,
   }: SignUpCredentials): Promise<SignUpResponse> {
     try {
-      const response = await api.post("/auth/register", {
+      const response = await api.post("/api/signup", {
         name,
         email,
         password,
       });
 
       if (response.data.status === "Usuário criado com sucesso!") {
-        const response = await api.post("/auth/sessions", {
+        const response = await api.post("/api/session", {
           email: email,
           password: password,
         });
 
-        const { _id, name, token, refreshToken, permissions, roles } =
-          response.data;
+        const { _id, name, token, refreshToken, roles } = response.data;
 
         if (response.data.error) {
           return response.data.message;
@@ -240,7 +233,6 @@ export function ContextProvider({ children }: AuthProviderProps) {
             _id,
             name,
             email,
-            permissions,
             roles,
           });
 

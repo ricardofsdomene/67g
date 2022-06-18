@@ -1,13 +1,30 @@
-import { Flex, Input, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Flex, Input, Text, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
 import Header from "../../Components/Header";
+import { Context } from "../../contexts/ContextProvider";
 import { useWindowSize } from "../../utils/useWindowSize";
 
 export default function Signin() {
   const size = useWindowSize();
 
+  const { signIn } = useContext(Context);
+
+  const toast = useToast();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const handleSignIn = async () => {
+    try {
+      await signIn({ email, password });
+    } catch (e) {
+      toast({
+        status: "error",
+        description: "Error",
+      });
+    }
+  };
 
   return (
     <Flex flexDir="column" px="4">
@@ -50,6 +67,7 @@ export default function Signin() {
           border="1px solid #eee"
         />
         <Flex
+          onClick={handleSignIn}
           cursor="pointer"
           mt="10"
           h="14"
