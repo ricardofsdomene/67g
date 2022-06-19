@@ -2,13 +2,14 @@ import { Flex, Input, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import Header from "../../Components/Header";
+import Loading from "../../Components/Loading";
 import { Context } from "../../contexts/ContextProvider";
 import { useWindowSize } from "../../utils/useWindowSize";
 
 export default function Signin() {
   const size = useWindowSize();
 
-  const { signIn } = useContext(Context);
+  const { loading, signIn } = useContext(Context);
 
   const toast = useToast();
 
@@ -26,11 +27,15 @@ export default function Signin() {
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <Flex flexDir="column" px="4">
       <Header none />
       <Flex mx="auto" maxW={1200} flexDir="column" w="100%" h="100%">
-        <Text fontWeight="bold" color="#333" fontSize="6xl">
+        <Text fontWeight="bold" color="#333" fontSize="5xl">
           Signin
         </Text>
         <Text mt="10" fontWeight="bold" color="#333" fontSize="2xl">

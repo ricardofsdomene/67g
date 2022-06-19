@@ -24,12 +24,6 @@ export default function Header({ none = false }) {
 
   const size = useWindowSize();
 
-  useEffect(() => {
-    if (user) {
-      console.log(user.role);
-    }
-  }, [user]);
-
   if (!user) {
     <Loading />;
   }
@@ -111,70 +105,76 @@ export default function Header({ none = false }) {
           </>
         )}
       </Flex>
-      <Flex
-        maxW={1200}
-        style={{
-          height: 80,
-        }}
-        w="100%"
-        py="4"
-        mx="auto"
-        justify="space-between"
-        flexDir="row"
-      >
-        <Flex>
-          {router.asPath === "/account/signin" ||
-          router.asPath === "/account/signup" ? (
-            <Flex display="none" />
-          ) : (
-            <Text
-              onClick={() => router.push("/overview")}
-              textDecorationLine={
-                user && user.role === "67g"
-                  ? router.asPath === "/overview" && "underline"
-                  : (router.asPath === "/overview" || router.asPath === "/") &&
-                    "underline"
-              }
-              cursor="pointer"
-              fontSize="xl"
-              fontWeight="light"
-              color="#333"
-            >
-              Overview
-            </Text>
-          )}
-          {user && user.role === "67g" && (
-            <Flex>
+      {none ? (
+        <Flex
+          style={{
+            height: 80,
+          }}
+        />
+      ) : (
+        <Flex
+          maxW={1200}
+          style={{
+            height: 80,
+          }}
+          w="100%"
+          py="4"
+          mx="auto"
+          justify="space-between"
+          flexDir="row"
+        >
+          <Flex>
+            {router.asPath === "/account/signin" ||
+            router.asPath === "/account/signup" ? (
+              <Flex display="none" />
+            ) : (
               <Text
-                onClick={() => router.push("/whiteboard")}
+                onClick={() => router.push("/overview")}
                 textDecorationLine={
-                  router.asPath === "/whiteboard" && "underline"
+                  (router.asPath === "/overview" || router.asPath === "/") &&
+                  "underline"
                 }
-                ml="5"
                 cursor="pointer"
                 fontSize="xl"
                 fontWeight="light"
                 color="#333"
               >
-                Whiteboard
+                Overview
               </Text>
-              <Text
-                onClick={() => router.push("/projects")}
-                textDecorationLine={
-                  router.asPath === "/projects" && "underline"
-                }
-                ml="5"
-                cursor="pointer"
-                fontSize="xl"
-                fontWeight="light"
-                color="#333"
-              >
-                Projects
-              </Text>
-            </Flex>
-          )}
+            )}
+            {user && user.role === "67g" && (
+              <Flex>
+                <Text
+                  onClick={() => router.push("/whiteboard")}
+                  textDecorationLine={
+                    router.asPath === "/whiteboard" && "underline"
+                  }
+                  ml="5"
+                  cursor="pointer"
+                  fontSize="xl"
+                  fontWeight="light"
+                  color="#333"
+                >
+                  Whiteboard
+                </Text>
+                <Text
+                  onClick={() => router.push("/projects")}
+                  textDecorationLine={
+                    router.asPath === "/projects" && "underline"
+                  }
+                  ml="5"
+                  cursor="pointer"
+                  fontSize="xl"
+                  fontWeight="light"
+                  color="#333"
+                >
+                  Projects
+                </Text>
+              </Flex>
+            )}
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </Flex>
   );
 }

@@ -5,10 +5,12 @@ import { theme } from "../styles/theme";
 import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { Context, ContextProvider } from "../contexts/ContextProvider";
 import { Html, Main, NextScript } from "next/document";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import Header from "../Components/Header";
+import Loading from "../Components/Loading";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { user, loading } = useContext(Context);
+  const { user } = useContext(Context);
 
   return (
     <ContextProvider>

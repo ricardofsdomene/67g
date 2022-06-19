@@ -12,11 +12,7 @@ export default function Index() {
   const { user, loading } = useContext(Context);
 
   if (loading) {
-    return (
-      <Flex h="100vh" w="100%" justify="center" align="center">
-        <Spinner size="lg" color="#333" />
-      </Flex>
-    );
+    return <Loading />;
   }
 
   return (

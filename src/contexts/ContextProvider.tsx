@@ -13,7 +13,6 @@ import { BroadcastChannel } from "broadcast-channel";
 import jwtDecode from "jwt-decode";
 import { Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import axios, { AxiosResponse } from "axios";
-import Loading from "../Components/Loading";
 
 type User = {
   _id: string;
@@ -108,7 +107,7 @@ export function ContextProvider({ children }: AuthProviderProps) {
         router.push("/");
         setTimeout(() => {
           setLoading(false);
-        }, 500);
+        }, 350);
       }
     } else if (token) {
       // Verify if token is valid
@@ -134,7 +133,9 @@ export function ContextProvider({ children }: AuthProviderProps) {
       });
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 350);
     }
   }, []);
 
@@ -286,14 +287,6 @@ export function ContextProvider({ children }: AuthProviderProps) {
     Router.push("/");
     setLoading(false);
   }
-
-  // useEffect(() => {
-  //   if (user) {
-  //     setLoading(true);
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, [user]);
 
   return (
     <Context.Provider

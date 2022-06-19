@@ -1,11 +1,19 @@
 import { Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "../Components/Header";
+import Loading from "../Components/Loading";
+import { Context } from "../contexts/ContextProvider";
 import { useWindowSize } from "../utils/useWindowSize";
 
 export default function Index() {
   const size = useWindowSize();
+
+  const { user, loading } = useContext(Context);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Flex flexDir="column" w="100%" bg="#FCFCFF" px="4" pb="4">
